@@ -19,6 +19,11 @@ _CACHED_TPM_PATH="$(_tpm_path)"
 # This includes a prioritized search on different locations.
 #
 _get_user_tmux_conf() {
+    local custom_tmux_conf="$(tmux start-server\; show-environment -g TMUX_CONFIG | cut -f2 -d=)"
+    if [ -n "$custom_tmux_conf" ]; then
+        echo "$custom_tmux_conf"
+        return
+    fi
 	# Define the different possible locations.
 	xdg_location="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
 	default_location="$HOME/.tmux.conf"
